@@ -1,105 +1,190 @@
-# 📱 Meme Generator App — Intern Task
+# 🎭 Meme Generator Pro
 
-## 🧩 Overview
+A production-ready, feature-rich meme generator built with Expo and React Native. Create, customize, save, and share memes with offline capabilities and advanced customization options.
 
-This assignment is based on a simple image-based React Native (Expo) app. The core functionality includes:
-- Choosing an image from local storage or a URL
-- Adding top and bottom text to create a meme
-- Viewing or downloading the final result
+## ✨ Features
 
-Your goal is to take this prototype and make it production-ready—stable, offline-capable, and more polished in terms of UX and features.
+### 🎨 **Meme Creation**
+- **Multiple Image Sources**: Choose from device gallery, camera, or URL
+- **Popular Templates**: Pre-loaded popular meme templates from Pexels
+- **Real-time Preview**: See your meme as you type
+- **Custom Text**: Add top and bottom text with live preview
+- **Font Customization**: Choose from multiple Inter font weights
+- **Color Customization**: 8 different text colors to choose from
+
+### 💾 **Advanced Storage & Management**
+- **Local Storage**: All memes saved locally using AsyncStorage
+- **Favorites System**: Mark memes as favorites for quick access
+- **Edit Saved Memes**: Modify text on previously created memes
+- **Bulk Operations**: Clear all memes with confirmation
+- **Persistent Settings**: Font and color preferences saved across sessions
+
+### 🌐 **Offline Capabilities**
+- **Full Offline Mode**: Create memes without internet connection
+- **Network Status Indicator**: Visual banner when offline
+- **Cached Images**: Previously loaded images work offline
+- **Local Image Processing**: All meme generation happens locally
+
+### 🎯 **User Experience**
+- **Guided Workflow**: 3-step process with visual indicators
+- **Responsive Design**: Works on all screen sizes
+- **Dark/Light Theme**: Automatic theme switching with manual override
+- **Haptic Feedback**: Tactile feedback on mobile devices
+- **Smooth Animations**: Polished micro-interactions
+
+### 📱 **Sharing & Export**
+- **Native Sharing**: Share memes using device's share sheet
+- **Camera Roll Save**: Download memes directly to device
+- **High Quality Export**: PNG format with optimized quality
+- **Cross-platform**: Works on iOS, Android, and Web
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ installed
+- Expo CLI installed globally: `npm install -g @expo/cli`
+- iOS Simulator (for iOS development)
+- Android Studio/Emulator (for Android development)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd meme-generator-pro
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open the app**
+   - **Web**: Open http://localhost:8081 in your browser
+   - **iOS**: Press `i` in terminal or scan QR code with Expo Go
+   - **Android**: Press `a` in terminal or scan QR code with Expo Go
+
+## 📱 Platform Support
+
+| Platform | Status | Features |
+|----------|--------|----------|
+| **Web** | ✅ Full Support | All features except camera and haptics |
+| **iOS** | ✅ Full Support | All features including camera and haptics |
+| **Android** | ✅ Full Support | All features including camera and haptics |
+
+## 🏗️ Architecture
+
+### **Tech Stack**
+- **Framework**: Expo SDK 52.0.30
+- **Navigation**: Expo Router 4.0.17
+- **UI**: React Native with custom styling
+- **Storage**: AsyncStorage for persistence
+- **Images**: Expo Image with caching
+- **Icons**: Lucide React Native
+- **Fonts**: Expo Google Fonts (Inter family)
+
+### **Project Structure**
+```
+├── app/                    # Expo Router pages
+│   ├── _layout.tsx        # Root layout with providers
+│   ├── (tabs)/           # Tab-based navigation
+│   │   ├── _layout.tsx   # Tab configuration
+│   │   ├── index.tsx     # Create meme screen
+│   │   ├── saved.tsx     # Saved memes screen
+│   │   └── settings.tsx  # Settings screen
+│   └── +not-found.tsx    # 404 page
+├── components/            # Reusable components
+│   ├── ImageSelector.tsx # Image selection component
+│   ├── MemeEditor.tsx    # Meme creation interface
+│   ├── MemeModal.tsx     # Meme detail modal
+│   ├── EditMemeModal.tsx # Edit meme modal
+│   ├── FontSelector.tsx  # Font selection component
+│   ├── ColorSelector.tsx # Color selection component
+│   ├── NetworkBanner.tsx # Offline indicator
+│   └── LoadingSpinner.tsx# Loading component
+├── contexts/             # React contexts
+│   ├── ThemeContext.tsx  # Theme management
+│   ├── MemeContext.tsx   # Meme data management
+│   └── NetworkContext.tsx# Network status
+└── hooks/                # Custom hooks
+    └── useFrameworkReady.ts
+```
+
+
+## 📊 Features Deep Dive
+
+### **Meme Creation Workflow**
+
+1. **Image Selection**
+   - Device gallery with permission handling
+   - Camera capture (mobile only)
+   - URL input with validation
+   - Popular templates grid
+
+2. **Text Customization**
+   - Top and bottom text inputs
+   - Real-time preview updates
+   - Font family selection
+   - Text color customization
+   - Character limits (50 chars)
+
+3. **Generation & Export**
+   - High-quality PNG generation
+   - View capture technology
+   - Optimized file sizes
+   - Multiple export options
+
+### **Storage System**
+
+```typescript
+interface Meme {
+  id: string;
+  imageUri: string;      // Original image
+  memeUri: string;       // Generated meme
+  topText: string;
+  bottomText: string;
+  createdAt: string;
+  isFavorite: boolean;
+  fontFamily?: string;
+  textColor?: string;
+}
+```
+
+### **Offline Capabilities**
+
+- **Network Detection**: Real-time connectivity monitoring
+- **Graceful Degradation**: Features adapt to offline state
+- **Local Processing**: All core features work offline
+- **Cache Management**: Intelligent image caching
+
+## 🚀 Deployment
+
+### **Web Deployment**
+```bash
+npm run build:web
+# Deploy the dist folder to your hosting provider
+```
+
+### **Mobile Deployment**
+1. **Development Build**
+   ```bash
+   expo install expo-dev-client
+   expo run:ios
+   expo run:android
+   ```
+
+2. **Production Build**
+   ```bash
+   eas build --platform all
+   eas submit --platform all
+   ```
 
 ---
 
-## 🎯 What You Need to Do
-
-You’ll fork this repo, build out the enhancements listed below, and open a pull request with your final version.
-
----
-
-### Phase 1: Image Caching
-- Store loaded images locally to avoid re-fetching on repeat use.
-- Ensure cached images remain available across app restarts and in offline mode.
-
-> Bonus points if you build the caching logic yourself instead of relying entirely on third-party tools.
-
----
-
-### Phase 2: Offline Access
-- Persist all meme-related data (image source, overlay text, timestamp, etc.).
-- Build a "Saved Memes" screen that lists generated memes.
-- The list should be usable offline, including viewing images and text.
-
----
-
-### Phase 3: UX Improvements
-- Add pull-to-refresh to all list views.
-- Detect internet connectivity changes and inform users through banners or notifications.
-- Make sure any features that require internet gracefully handle offline scenarios.
-
----
-
-### Phase 4: Meme Management
-- Let users delete saved memes (with confirmation).
-- Add a way to favorite/star memes and view them in a separate tab or screen.
-- Optionally: implement a way to edit an existing meme (pre-filled editor).
-
----
-
-### Phase 5: Customization and Preferences
-- Let users choose font styles, text colors, and basic image filters.
-- Store user preferences across app sessions.
-- Add support for light/dark mode, based on system theme.
-
----
-
-### Bonus (Optional, but appreciated)
-- Add a share button to export memes outside the app.
-- Allow memes to be saved to the gallery or local filesystem.
-- Add transitions or subtle animations when generating or switching memes.
-
----
-
-## 🧪 Deliverables
-
-- A GitHub Pull Request with your final submission
-- An updated `README.md` with setup steps and a summary of what you built
-- A short demo video (screen recording is fine) showing:
-  - Meme creation
-  - Offline mode in action
-  - Any other features you added (e.g. favorites, themes, etc.)
-
----
-
-## 🧰 Tech Notes
-
-You can use any tool, utility, or library that works with Expo and React Native.  
-If you implement core functionality (caching, storage, transitions) manually instead of relying on prebuilt packages, that’s a big plus.
-
----
-
-## ✅ What We'll Look At
-
-| Area               | What It Means                                                 |
-|--------------------|---------------------------------------------------------------|
-| Functionality       | Core features should work end-to-end without crashes         |
-| Code Structure      | Clean, modular, and readable                                 |
-| Persistence         | Meme data and settings are reliably stored and restored      |
-| UX & UI            | Smooth, responsive, and clean UI/UX                          |
-| Completeness        | All main features are done; bonus items are a plus           |
-| Documentation       | README is clear, code is well commented                      |
-
----
-
-## 📝 How to Submit
-
-1. Fork this repo  
-2. Complete the task in your fork  
-3. Open a pull request with your final work  
-4. In your PR description, summarize what you implemented (in third person)
-
----
-
-## ❓ Need Help?
-
-Tag the maintainers in the issue tracker.
+**Made with ❤️ by Krish Panchani**
